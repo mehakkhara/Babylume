@@ -3,6 +3,7 @@ import { nameAndAgeAt } from '../lib/babyAge'
 import { composeKeepsake, shareKeepsake, KEEPSAKE_THEMES } from '../lib/keepsakeCard'
 import { addEntry, KEEPSAKE_KIND } from '../data/journalStore'
 import { CropFrame } from './PhotoShape'
+import { LOGO_URL } from '../lib/brand'
 
 // Preview + share sheet for a keepsake card. Works from any journal photo:
 // the headline starts as the entry's note and can be edited. Every card she
@@ -200,10 +201,9 @@ export default function KeepsakeModal({ photoUrl, title: initialTitle = '', take
           }} />
           <span style={{
             position: 'absolute', top: '10px', right: '10px', pointerEvents: 'none',
-            background: 'rgba(255,255,255,0.88)', color: look.badge,
-            fontSize: '9.5px', fontWeight: 700, borderRadius: '999px', padding: '4px 9px',
+            background: 'rgba(255,255,255,0.9)', borderRadius: '999px', padding: '5px 8px', lineHeight: 0,
           }}>
-            ✦ Babylume
+            <img src={LOGO_URL} alt="Babylume" style={{ height: '12px', width: 'auto', display: 'block' }} />
           </span>
           <div style={{ position: 'absolute', left: '16px', right: '16px', bottom: '16px', pointerEvents: 'none' }}>
             <div style={{

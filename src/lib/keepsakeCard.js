@@ -1,3 +1,4 @@
+import { loadLogo, drawLogoPill } from './brand'
 // Keepsake card composition — turns a journal photo + headline into a designed,
 // shareable image. Everything happens on a canvas on the device: no uploads,
 // no image service, no cost. Output is a 1080×1350 (4:5) JPEG — the size
@@ -66,7 +67,7 @@ function parsePos(value) {
 //   position — the crop she chose (object-position string); defaults to centre
 export async function composeKeepsake({ photoUrl, title, subtitle, theme = 'lavender', position }) {
   const style = THEME_STYLES[theme] || THEME_STYLES.lavender
-  const img = await loadImage(photoUrl)
+  const [img, logo] = await Promise.all([loadImage(photoUrl), loadLogo()])
 
   const canvas = document.createElement('canvas')
   canvas.width = W
@@ -87,22 +88,8 @@ export async function composeKeepsake({ photoUrl, title, subtitle, theme = 'lave
   ctx.fillStyle = grad
   ctx.fillRect(0, 0, W, H)
 
-  // Small brand badge, top right.
-  const badgeText = '✦ Babylume'
-  ctx.font = '600 34px Inter, system-ui, sans-serif'
-  const bw = ctx.measureText(badgeText).width + 48
-  const bx = W - bw - 40
-  ctx.fillStyle = 'rgba(255,255,255,0.88)'
-  if (ctx.roundRect) {
-    ctx.beginPath()
-    ctx.roundRect(bx, 40, bw, 64, 32)
-    ctx.fill()
-  } else {
-    ctx.fillRect(bx, 40, bw, 64)
-  }
-  ctx.fillStyle = style.badge
-  ctx.textBaseline = 'middle'
-  ctx.fillText(badgeText, bx + 24, 40 + 33)
+  // Logo badge, top right.
+  drawLogoPill(ctx, logo, { x: W - 40, y: 40, height: 64, align: 'right' })
 
   // Milestone title (serif, wrapped) + subtitle, anchored to the bottom.
   const margin = 70

@@ -22,6 +22,7 @@ import { markCheckIn, dayKey } from '../lib/streak'
 import { hasSeenTipToday, markTipSeenToday } from '../lib/tipCard'
 import { Screen, Card, ListRow, Avatar, SectionHeader, PrimaryButton, SecondaryButton, IconTile } from '../components/ui'
 import { color, shadow, type } from '../theme'
+import { LOGO_URL } from '../lib/brand'
 
 export default function HomeScreen({ profile, onOpen, onOpenJournal, photoVersion = 0 }) {
   const { babyName, dateOfBirth, momName } = profile
@@ -115,13 +116,16 @@ export default function HomeScreen({ profile, onOpen, onOpenJournal, photoVersio
 
   return (
     <Screen>
-      {/* Greeting: name and the date. Profile sits behind the avatar. */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
-        <div style={{ minWidth: 0 }}>
-          <h1 style={{ ...type.h1, fontSize: '24px' }}>{greetingForHour(hour, momName)}</h1>
-          <p style={{ ...type.body, marginTop: '4px' }}>{dateLabel}</p>
-        </div>
+      {/* Logo on the left, profile behind the avatar on the right. */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+        <img src={LOGO_URL} alt="Babylume" style={{ display: 'block', height: '34px', width: 'auto' }} />
         <Avatar name={momName} onClick={() => onOpen('profile')} label="Your profile" />
+      </div>
+
+      {/* Greeting: name and the date. */}
+      <div style={{ marginTop: '18px', minWidth: 0 }}>
+        <h1 style={{ ...type.h1, fontSize: '24px' }}>{greetingForHour(hour, momName)}</h1>
+        <p style={{ ...type.body, marginTop: '4px' }}>{dateLabel}</p>
       </div>
 
       {/* Baby hero: the photo, with name and age on it. Tap for the profile. */}

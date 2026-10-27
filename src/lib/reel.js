@@ -9,6 +9,7 @@
 import { ageLabelAt, monthsAt } from './babyAge'
 import { isAudioType, isVideoType } from '../data/journalStore'
 import { wrapText } from './keepsakeCard'
+import { loadLogo, drawLogoPill } from './brand'
 
 export const W = 1080
 export const H = 1920
@@ -100,7 +101,7 @@ function parsePos(value) {
  * modal can draw a still preview and then hand the same scene to makeReel.
  */
 export async function buildScene({ photos, memos = [], babyName, dateOfBirth, monthName, monthLabel }) {
-  const images = await Promise.all(photos.map(p => loadImage(p.photoBlob)))
+  const [logo, ...images] = await Promise.all([loadLogo(), ...photos.map(p => loadImage(p.photoBlob))])
   const name = (babyName || '').trim() || 'Your baby'
   const slides = photos.map((p, i) => ({
     img: images[i],
@@ -112,7 +113,7 @@ export async function buildScene({ photos, memos = [], babyName, dateOfBirth, mo
   const first = photos[0]?.createdAt
   const ageAtMonth = dateOfBirth && first ? ageLabelAt(dateOfBirth, first) : null
   return {
-    slides, memos, name, monthName, monthLabel,
+    slides, memos, name, monthName, monthLabel, logo,
     subtitle: ageAtMonth ? `${name} · ${ageAtMonth}` : name,
     total: reelDurationMs(photos.length),
   }
@@ -135,14 +136,8 @@ function drawBackdrop(ctx) {
   ctx.fillRect(0, 0, W, H)
 }
 
-function drawBadge(ctx, alpha = 1) {
-  ctx.save()
-  ctx.globalAlpha = alpha
-  ctx.font = FONT_SMALL
-  ctx.fillStyle = 'rgba(255,255,255,0.85)'
-  ctx.textBaseline = 'top'
-  ctx.fillText('✦ Babylume', 70, 70)
-  ctx.restore()
+function drawBadge(ctx, scene, alpha = 1) {
+  drawLogoPill(ctx, scene.logo, { x: 70, y: 70, height: 72, alpha })
 }
 
 function drawSlide(ctx, scene, i, local) {
@@ -200,7 +195,7 @@ function drawIntro(ctx, scene, local) {
   ctx.fillStyle = '#dcd6ff'
   ctx.fillText(scene.subtitle, W / 2, H / 2 + 70)
   ctx.restore()
-  drawBadge(ctx, a)
+  drawBadge(ctx, scene, a)
 }
 
 function drawOutro(ctx, scene, local) {
@@ -216,10 +211,8 @@ function drawOutro(ctx, scene, local) {
   ctx.fillStyle = '#dcd6ff'
   const n = scene.slides.length
   ctx.fillText(`${n} little moments`, W / 2, H / 2 + 70)
-  ctx.font = FONT_SMALL
-  ctx.fillStyle = 'rgba(255,255,255,0.75)'
-  ctx.fillText('✦ Babylume', W / 2, H / 2 + 220)
   ctx.restore()
+  drawLogoPill(ctx, scene.logo, { x: W / 2, y: H / 2 + 170, height: 80, align: 'center', alpha: a })
 }
 
 /** Draw the frame for time t (ms) into ctx. Pure in t, so it can be scrubbed. */
