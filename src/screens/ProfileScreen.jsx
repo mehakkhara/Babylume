@@ -16,7 +16,7 @@ import {
 import StreakRow from '../components/StreakRow'
 import { Screen, Card, ListRow, Avatar, PrimaryButton } from '../components/ui'
 import { color, gradient, shadow, type } from '../theme'
-import { ABOUT_PARAGRAPHS } from '../lib/disclaimer'
+import { ABOUT_PARAGRAPHS, PRIVACY_URL, TERMS_URL } from '../lib/disclaimer'
 
 export default function ProfileScreen({ profile, onBack, onEditProfile, onSavedTips, onChecklists, onSignOut, onPhotoChange }) {
   const babyName = (profile.babyName || '').trim() || 'your baby'
@@ -169,6 +169,11 @@ export default function ProfileScreen({ profile, onBack, onEditProfile, onSavedT
         {ABOUT_PARAGRAPHS.map((text, i) => (
           <p key={i} style={{ ...type.small, marginTop: i === 0 ? '6px' : '8px' }}>{text}</p>
         ))}
+        <p style={{ ...type.small, marginTop: '10px' }}>
+          <a href={PRIVACY_URL} target="_blank" rel="noopener" style={{ color: '#7665d8', fontWeight: 600 }}>Privacy Policy</a>
+          {' · '}
+          <a href={TERMS_URL} target="_blank" rel="noopener" style={{ color: '#7665d8', fontWeight: 600 }}>Terms of Service</a>
+        </p>
       </Card>
 
       {showPwd && (
