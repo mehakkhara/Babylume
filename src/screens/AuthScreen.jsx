@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { LOGO_URL } from '../lib/brand'
+import { PRIVACY_URL, TERMS_URL } from '../lib/disclaimer'
 
 export default function AuthScreen() {
   // Default to 'signin' — most visits are returning users. First-time visitors
@@ -129,15 +131,7 @@ export default function AuthScreen() {
         maxWidth: '380px',
         boxShadow: '0 10px 40px rgba(100,100,180,0.15)',
       }}>
-        <h1 style={{
-          margin: '0 0 6px',
-          fontSize: '24px',
-          fontWeight: '700',
-          color: '#1e1b4b',
-          textAlign: 'center',
-        }}>
-          Welcome to Babylume
-        </h1>
+        <img src={LOGO_URL} alt="Babylume" style={{ display: 'block', width: 'min(100%, 300px)', height: 'auto', margin: '0 auto 18px' }} />
         <p style={{
           margin: '0 0 24px',
           fontSize: '14px',
@@ -270,6 +264,14 @@ export default function AuthScreen() {
                 {submitting ? submittingLabel : primaryLabel}
               </button>
             </form>
+            {mode !== 'signin' && (
+              <p style={{ margin: '12px 0 0', fontSize: '12px', color: '#9ca3af', textAlign: 'center', lineHeight: 1.5 }}>
+                By creating an account you agree to the{' '}
+                <a href={TERMS_URL} target="_blank" rel="noopener" style={{ color: '#7665d8' }}>Terms</a>
+                {' and '}
+                <a href={PRIVACY_URL} target="_blank" rel="noopener" style={{ color: '#7665d8' }}>Privacy Policy</a>.
+              </p>
+            )}
 
             <button
               type="button"

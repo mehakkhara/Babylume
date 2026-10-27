@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { ONBOARDING_LINE } from '../lib/disclaimer'
+import { ONBOARDING_LINE, PRIVACY_URL, TERMS_URL } from '../lib/disclaimer'
 import { getProfile } from '../lib/db'
+import { LOGO_URL } from '../lib/brand'
 
 const sexOptions = [
   { value: 'F', label: 'Girl', emoji: '👧' },
@@ -168,6 +169,7 @@ export default function OnboardingScreen({ onComplete }) {
       display: 'flex',
       flexDirection: 'column',
     }}>
+      {!isEditing && <img src={LOGO_URL} alt="Babylume" style={{ display: 'block', width: 'min(100%, 300px)', height: 'auto', margin: '0 auto 28px' }} />}
       <h1 style={{ margin: '0 0 8px', fontSize: '26px', fontWeight: '700', color: '#1a1a2e', lineHeight: 1.3 }}>
         {isEditing ? 'Edit Profile' : 'Welcome'}
       </h1>
@@ -360,7 +362,10 @@ export default function OnboardingScreen({ onComplete }) {
       </button>
       {!isEditing && (
         <p style={{ margin: '12px 0 0', fontSize: '12px', color: '#9ca3af', textAlign: 'center', lineHeight: 1.5 }}>
-          {ONBOARDING_LINE}
+          {ONBOARDING_LINE}{' '}
+          <a href={PRIVACY_URL} target="_blank" rel="noopener" style={{ color: '#7665d8' }}>Privacy</a>
+          {' · '}
+          <a href={TERMS_URL} target="_blank" rel="noopener" style={{ color: '#7665d8' }}>Terms</a>
         </p>
       )}
     </div>

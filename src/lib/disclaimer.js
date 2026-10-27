@@ -18,3 +18,8 @@ export const ABOUT_PARAGRAPHS = [
 
 // Onboarding, under Get started.
 export const ONBOARDING_LINE = 'By continuing you understand this app offers general guidance, not medical advice.'
+
+// The standalone legal pages live in public/ so they have stable URLs for the
+// App Store listing and for people who are not signed in.
+export const PRIVACY_URL = `${import.meta.env.BASE_URL}privacy.html`
+export const TERMS_URL = `${import.meta.env.BASE_URL}terms.html`
